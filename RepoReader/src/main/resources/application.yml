@@ -1,0 +1,100 @@
+spring:
+  application:
+    name: RepoReader
+
+  # --------------------------------------------------------------------------
+  # PostgreSQL Database Configuration
+  # --------------------------------------------------------------------------
+  datasource:
+    url: jdbc:postgresql://localhost:5433/devpilot
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  # --------------------------------------------------------------------------
+  # JPA / Hibernate Configuration
+  # --------------------------------------------------------------------------
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+  # --------------------------------------------------------------------------
+  # Ollama configuration
+  #
+  # Make sure Ollama is running:
+  #   ollama serve
+  #
+  # Chat model:
+  #   ollama pull qwen3:1.7b
+  #
+  # Embedding model:
+  #   ollama pull nomic-embed-text
+  # --------------------------------------------------------------------------
+  ai:
+    ollama:
+      # Ollama server
+      base-url: http://localhost:11434
+
+      # Model initialization
+      init:
+        pull-model-strategy: never
+        chat:
+          include: true
+        timeout: 10m
+
+      # Chat / LLM
+      chat:
+        model: qwen3:1.7b
+        options:
+          top-p: 0.9
+        temperature: 0.2
+        num-ctx: 4096
+
+      # Embeddings
+      embedding:
+        model: nomic-embed-text
+
+
+    # PGVector
+    vectorstore:
+      pgvector:
+        dimensions: 768
+        initialize-schema: true
+        index-type: hnsw
+        distance-type: cosine-distance
+
+
+  # --------------------------------------------------------------------------
+  # GitHub OAuth2 Client
+  # --------------------------------------------------------------------------
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            client-id: Ov23liXTP8wKQoyE8lk7
+            client-secret: 5eb35542aa90887034374b7f45b2886e4bac5c31
+            scope: read:user,repo
+            client-name: GitHub
+
+# ------------------------------------------------------------------------------
+# App Settings
+# ------------------------------------------------------------------------------
+app:
+  token-encryptor-password: 3243432
+  token-encryptor-salt: 3243263241
+  frontend-url: http://localhost:5173
+  cors:
+    allowed-origins: http://localhost:5173
+
+# ------------------------------------------------------------------------------
+# Logging
+# ------------------------------------------------------------------------------
+logging:
+  level:
+    org.springframework.ai: INFO
