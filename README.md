@@ -118,7 +118,7 @@ RepoReader/                    ← git repo root
 │       │   ├── entity/ · dto/ · repo/ · enums/ · exceptions/
 │       └── resources/application.yml
 │
-└── repo_reader/               ← FRONTEND (React + Vite)
+└── repo_reader_client/               ← FRONTEND (React + Vite)
     ├── package.json
     ├── vite.config.ts
     ├── tsconfig*.json
